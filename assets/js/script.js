@@ -1,5 +1,4 @@
 (() => {
-  // Elementos do DOM
   const pdfInput = document.getElementById('pdfInput');
   const dropzone = document.getElementById('dropzone');
   const fileNames = document.getElementById('fileNames');
@@ -138,21 +137,46 @@
 
           const { width, height } = newPage.getSize();
 
-          newPage.drawText(`${currentPageNumber}`, {
-            x: width - 77,
-            y: height - 106,
-            size: 36,
-            color: PDFLib.rgb(0, 0, 0),
-            rotate: PDFLib.degrees(90),
-          });
+          if(currentPageNumber < 10) {
+            newPage.drawText(`${currentPageNumber}`, {
+              x: width - 77,
+              y: height - 102,
+              size: 36,
+              color: PDFLib.rgb(0, 0, 0),
+              rotate: PDFLib.degrees(90),
+            });
+          }
 
-          newPage.drawText(`${totalPages}`, {
-            x: width - 38,
-            y: height - 72,
-            size: 36,
-            color: PDFLib.rgb(0, 0, 0),
-            rotate: PDFLib.degrees(90),
-          });
+          if(currentPageNumber >= 10) {
+            newPage.drawText(`${currentPageNumber}`, {
+              x: width - 77,
+              y: height - 106,
+              size: 36,
+              color: PDFLib.rgb(0, 0, 0),
+              rotate: PDFLib.degrees(90),
+            });
+          } 
+
+          if(totalPages < 10) {
+            newPage.drawText(`${totalPages}`, {
+              x: width - 40,
+              y: height - 59,
+              size: 36,
+              
+              color: PDFLib.rgb(0, 0, 0),
+              rotate: PDFLib.degrees(90),
+            });
+          }
+
+          if(totalPages >= 10) {
+            newPage.drawText(`${totalPages}`, {
+              x: width - 38,
+              y: height - 72,
+              size: 36,
+              color: PDFLib.rgb(0, 0, 0),
+              rotate: PDFLib.degrees(90),
+            });
+          }
         }
       }
 
