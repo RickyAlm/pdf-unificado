@@ -134,11 +134,18 @@
         for (const [index, page] of pages.entries()) {
           currentPageNumber++;
           const newPage = mergedPdf.addPage(page);
-
+          
           const { width, height } = newPage.getSize();
+          
+          if(currentPageNumber == 1) {
+            continue;
+          }
 
-          if(currentPageNumber < 10) {
-            newPage.drawText(`${currentPageNumber}`, {
+          currentPageNumberSub1 = currentPageNumber - 1;
+          totalPagesSub1 = totalPages - 1;
+
+          if(currentPageNumberSub1 < 10) {
+            newPage.drawText(`${currentPageNumberSub1}`, {
               x: width - 77,
               y: height - 102,
               size: 36,
@@ -147,8 +154,8 @@
             });
           }
 
-          if(currentPageNumber >= 10) {
-            newPage.drawText(`${currentPageNumber}`, {
+          if(currentPageNumberSub1 >= 10) {
+            newPage.drawText(`${currentPageNumberSub1}`, {
               x: width - 77,
               y: height - 106,
               size: 36,
@@ -157,8 +164,8 @@
             });
           } 
 
-          if(totalPages < 10) {
-            newPage.drawText(`${totalPages}`, {
+          if(totalPagesSub1 < 10) {
+            newPage.drawText(`${totalPagesSub1}`, {
               x: width - 40,
               y: height - 59,
               size: 36,
@@ -168,8 +175,8 @@
             });
           }
 
-          if(totalPages >= 10) {
-            newPage.drawText(`${totalPages}`, {
+          if(totalPagesSub1 >= 10) {
+            newPage.drawText(`${totalPagesSub1}`, {
               x: width - 38,
               y: height - 72,
               size: 36,
