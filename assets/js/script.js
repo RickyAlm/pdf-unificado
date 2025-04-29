@@ -4,6 +4,21 @@
   const fileNames = document.getElementById('fileNames');
   const mergeBtn = document.getElementById('mergeBtn');
 
+  const paginateToggle = document.getElementById('paginateToggle');
+  const paginateFirstPage = document.getElementById('paginateFirstPage');
+
+  paginateToggle.addEventListener('change', function() {
+    if (!this.checked) {
+      paginateFirstPage.checked = false;
+      paginateFirstPage.disabled = true;
+    } else {
+      paginateFirstPage.checked = true;
+      paginateFirstPage.disabled = false;
+    }
+  });
+
+  paginateFirstPage.disabled = !paginateToggle.checked;
+
   ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
     dropzone.addEventListener(eventName, preventDefaults, false);
   });
@@ -57,9 +72,9 @@
   window.mergePDFs = async function() {
     const inputFiles = pdfInput.files;
     const pdfNameInput = document.getElementById('pdfName');
-    const paginateToggle = document.getElementById('paginateToggle');
-    
+
     const shouldPaginate = paginateToggle.checked;
+    const shouldPaginateFirstPage = paginateFirstPage.checked;
 
     let pdfName = pdfNameInput.value.trim();
 
@@ -137,27 +152,30 @@
         for (const [index, page] of pages.entries()) {
           currentPageNumber++;
           const newPage = mergedPdf.addPage(page);
-          
-          if (shouldPaginate) { // SÓ ADICIONA NUMERAÇÃO SE ATIVADO
+
+          if (shouldPaginate) {
             const { width, height } = newPage.getSize();
-            
-            if(currentPageNumber == 1) continue;
-  
-            currentPageNumberSub1 = currentPageNumber - 1;
-            totalPagesSub1 = totalPages - 1;
-  
-            if(currentPageNumberSub1 < 10) {
-              newPage.drawText(`${currentPageNumberSub1}`, {
+
+            debugger
+            if (!shouldPaginateFirstPage) {
+              if (currentPageNumber === 1) {
+                continue;
+              }
+            }
+
+            const displayPageNumber = !shouldPaginateFirstPage ? currentPageNumber - 1 : currentPageNumber;
+            const displayTotalPages = !shouldPaginateFirstPage ? totalPages - 1 : totalPages;
+
+            if (displayPageNumber < 10) {
+              newPage.drawText(`${displayPageNumber}`, {
                 x: width - 77,
                 y: height - 102,
                 size: 36,
                 color: PDFLib.rgb(0, 0, 0),
                 rotate: PDFLib.degrees(90),
               });
-            }
-  
-            if(currentPageNumberSub1 >= 10) {
-              newPage.drawText(`${currentPageNumberSub1}`, {
+            } else {
+              newPage.drawText(`${displayPageNumber}`, {
                 x: width - 77,
                 y: height - 106,
                 size: 36,
@@ -165,19 +183,17 @@
                 rotate: PDFLib.degrees(90),
               });
             } 
-  
-            if(totalPagesSub1 < 10) {
-              newPage.drawText(`${totalPagesSub1}`, {
+
+            if (displayTotalPages < 10) {
+              newPage.drawText(`${displayTotalPages}`, {
                 x: width - 40,
                 y: height - 59,
                 size: 36,
                 color: PDFLib.rgb(0, 0, 0),
                 rotate: PDFLib.degrees(90),
               });
-            }
-  
-            if(totalPagesSub1 >= 10) {
-              newPage.drawText(`${totalPagesSub1}`, {
+            } else {
+              newPage.drawText(`${displayTotalPages}`, {
                 x: width - 38,
                 y: height - 72,
                 size: 36,
