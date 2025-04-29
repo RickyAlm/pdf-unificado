@@ -57,6 +57,9 @@
   window.mergePDFs = async function() {
     const inputFiles = pdfInput.files;
     const pdfNameInput = document.getElementById('pdfName');
+    const paginateToggle = document.getElementById('paginateToggle');
+    
+    const shouldPaginate = paginateToggle.checked;
 
     let pdfName = pdfNameInput.value.trim();
 
@@ -135,54 +138,53 @@
           currentPageNumber++;
           const newPage = mergedPdf.addPage(page);
           
-          const { width, height } = newPage.getSize();
-          
-          if(currentPageNumber == 1) {
-            continue;
-          }
-
-          currentPageNumberSub1 = currentPageNumber - 1;
-          totalPagesSub1 = totalPages - 1;
-
-          if(currentPageNumberSub1 < 10) {
-            newPage.drawText(`${currentPageNumberSub1}`, {
-              x: width - 77,
-              y: height - 102,
-              size: 36,
-              color: PDFLib.rgb(0, 0, 0),
-              rotate: PDFLib.degrees(90),
-            });
-          }
-
-          if(currentPageNumberSub1 >= 10) {
-            newPage.drawText(`${currentPageNumberSub1}`, {
-              x: width - 77,
-              y: height - 106,
-              size: 36,
-              color: PDFLib.rgb(0, 0, 0),
-              rotate: PDFLib.degrees(90),
-            });
-          } 
-
-          if(totalPagesSub1 < 10) {
-            newPage.drawText(`${totalPagesSub1}`, {
-              x: width - 40,
-              y: height - 59,
-              size: 36,
-              
-              color: PDFLib.rgb(0, 0, 0),
-              rotate: PDFLib.degrees(90),
-            });
-          }
-
-          if(totalPagesSub1 >= 10) {
-            newPage.drawText(`${totalPagesSub1}`, {
-              x: width - 38,
-              y: height - 72,
-              size: 36,
-              color: PDFLib.rgb(0, 0, 0),
-              rotate: PDFLib.degrees(90),
-            });
+          if (shouldPaginate) { // SÓ ADICIONA NUMERAÇÃO SE ATIVADO
+            const { width, height } = newPage.getSize();
+            
+            if(currentPageNumber == 1) continue;
+  
+            currentPageNumberSub1 = currentPageNumber - 1;
+            totalPagesSub1 = totalPages - 1;
+  
+            if(currentPageNumberSub1 < 10) {
+              newPage.drawText(`${currentPageNumberSub1}`, {
+                x: width - 77,
+                y: height - 102,
+                size: 36,
+                color: PDFLib.rgb(0, 0, 0),
+                rotate: PDFLib.degrees(90),
+              });
+            }
+  
+            if(currentPageNumberSub1 >= 10) {
+              newPage.drawText(`${currentPageNumberSub1}`, {
+                x: width - 77,
+                y: height - 106,
+                size: 36,
+                color: PDFLib.rgb(0, 0, 0),
+                rotate: PDFLib.degrees(90),
+              });
+            } 
+  
+            if(totalPagesSub1 < 10) {
+              newPage.drawText(`${totalPagesSub1}`, {
+                x: width - 40,
+                y: height - 59,
+                size: 36,
+                color: PDFLib.rgb(0, 0, 0),
+                rotate: PDFLib.degrees(90),
+              });
+            }
+  
+            if(totalPagesSub1 >= 10) {
+              newPage.drawText(`${totalPagesSub1}`, {
+                x: width - 38,
+                y: height - 72,
+                size: 36,
+                color: PDFLib.rgb(0, 0, 0),
+                rotate: PDFLib.degrees(90),
+              });
+            }
           }
         }
       }
