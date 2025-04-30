@@ -1,5 +1,6 @@
 import { addPageNumbers } from './pagination.js';
 import { validateFileName, formatFileName } from './utils.js';
+import { previewPDF } from './pdfViewer.js';
 
 export function initPDFMerger(pdfInput, mergeBtn) {
   window.mergePDFs = async function() {
@@ -120,11 +121,21 @@ export function initPDFMerger(pdfInput, mergeBtn) {
     Swal.fire({
       icon: 'success',
       title: 'Pronto!',
-      text: `Seu PDF com ${fileCount} arquivo(s) unificado(s) e ${pageCount} páginas numeradas está pronto para download.`,
+      html: `Seu PDF com ${fileCount} arquivo(s) unificado(s) e ${pageCount} páginas está pronto.<br><br>
+            <div class="d-flex justify-content-center gap-2">
+              <button id="previewBtn" class="btn btn-outline-primary">
+                <i class="fas fa-eye me-2"></i>Visualizar
+              </button>
+            </div>`,
       confirmButtonColor: '#198754',
-      confirmButtonText: 'Download',
+      confirmButtonText: '<i class="fas fa-download me-2"></i>Download',
       showCancelButton: true,
-      cancelButtonText: 'Fechar'
+      cancelButtonText: 'Fechar',
+      didOpen: () => {
+        document.getElementById('previewBtn').addEventListener('click', () => {
+          previewPDF(pdfBytes);
+        });
+      }
     }).then((result) => {
       if (result.isConfirmed) {
         download(pdfBytes, pdfName, "application/pdf");

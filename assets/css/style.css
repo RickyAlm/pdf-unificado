@@ -142,3 +142,19 @@ body {
   margin-top: 3px;
   text-align: center;
 }
+
+.swal2-popup {
+  max-width: 650px !important;
+}
+
+.swal2-html-container {
+  margin-bottom: 1em !important;
+}
+
+#previewBtn {
+  transition: all 0.3s;
+}
+
+#previewBtn:hover {
+  transform: translateY(-2px);
+}
