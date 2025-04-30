@@ -14,5 +14,23 @@ export function previewPDF(pdfBytes) {
     });
   }
 
-  setTimeout(() => URL.revokeObjectURL(url), 10000);
+  if (win && !win.closed && typeof win.closed !== 'undefined') {
+    const interval = setInterval(() => {
+      if (win.closed) {
+        clearInterval(interval);
+        URL.revokeObjectURL(url);
+      }
+    }, 1000);
+  } else {
+    Swal.fire({
+      title: 'Visualização do PDF',
+      html: `<iframe src="${url}" style="width:100%; height:70vh; border:none;"></iframe>`,
+      width: '80%',
+      showConfirmButton: false,
+      showCloseButton: true,
+      willClose: () => {
+        URL.revokeObjectURL(url);
+      }
+    });
+  }
 }
