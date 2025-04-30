@@ -66,6 +66,7 @@ export function initFileManagement(pdfInput, fileNames, mergeBtn) {
       filesArray.splice(evt.oldIndex, 1);
       filesArray.splice(evt.newIndex, 0, movedItem);
       syncFileInput();
+      updateFileNames();
     }
   });
 
