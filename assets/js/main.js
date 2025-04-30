@@ -9,7 +9,7 @@ import { initPDFMerger } from './pdfMerger.js';
   const fileNames = document.getElementById('fileNames');
   const mergeBtn = document.getElementById('mergeBtn');
 
-  initDragAndDrop(dropzone, pdfInput, handleFiles);
+  initDragAndDrop(dropzone, pdfInput);
   initFileManagement(pdfInput, fileNames, mergeBtn);
   initPagination();
   initPDFMerger(pdfInput, mergeBtn);
